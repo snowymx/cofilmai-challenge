@@ -1,0 +1,57 @@
+version: "3.6"
+
+services:
+
+  api:
+    build: 
+      context: .
+      target: api
+    ports:
+      - 8888:8888
+    volumes:
+      - ./services/trends/:/code/trends
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=secret
+      - DATABASE_URL="postgresql://postgres:password@postgres:5432/cofilm"
+
+  tiktok-worker:
+    build: 
+      context: .
+      target: tiktok-worker
+    entrypoint: watchmedo auto-restart --recursive --pattern="*.py" --directory="." -- python -u main.py
+    volumes:
+      - ./workers/tiktok:/code/tiktok
+    environment:
+      - DATABASE_URL="postgresql://postgres:password@postgres:5432/cofilm"
+    
+
+  # swagger-ui:
+  #   image: swaggerapi/swagger-ui
+  #   container_name: "swagger-ui"
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./openapi/api.cofilmai.yaml:/openapi.json
+  #   environment:
+  #     SWAGGER_JSON: /openapi.json
+
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=cofilm
+
+volumes:
+  postgres:
+
+networks:
+  default:
+    driver: bridge
+    name: cofilm-net

@@ -60,10 +60,6 @@ async def sign_up(user: SignUp):
             "email": user.email,
             "password": encryptPassword(user.password),
             "name": user.name,
-            "nickname": user.nickname,
-            "birthDay": user.birthday,
-            "gender": user.gender,
-            "phone": user.phone,
         }
     )
 

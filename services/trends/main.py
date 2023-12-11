@@ -1,11 +1,10 @@
 from src.apis import apis
-from src.prisma import prisma
-from fastapi.middleware.gzip import GZipMiddleware
+from prisma import Prisma
 from fastapi import FastAPI
 
 app = FastAPI()
-app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.include_router(apis, prefix="/apis")
+prisma = Prisma()
 
 @app.on_event("startup")
 async def startup():
