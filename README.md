@@ -56,11 +56,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Copy env file
-```sh
-cp .env.example .env
-```
-
 ## Start Docker
 ```sh
 docker-compose up
