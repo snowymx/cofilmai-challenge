@@ -10,11 +10,9 @@ services:
       - 8888:8888
     volumes:
       - ./services/trends/:/code/trends
-    env_file:
-      - .env
     environment:
       - JWT_SECRET=secret
-      - DATABASE_URL="postgresql://postgres:password@postgres:5432/cofilm"
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/cofilm
 
   tiktok-worker:
     build: 
@@ -24,7 +22,7 @@ services:
     volumes:
       - ./workers/tiktok:/code/tiktok
     environment:
-      - DATABASE_URL="postgresql://postgres:password@postgres:5432/cofilm"
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/cofilm
     
 
   # swagger-ui:
